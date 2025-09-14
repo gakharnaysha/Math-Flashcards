@@ -1,0 +1,217 @@
+#importing libraries 
+import pygame
+from sys import exit
+
+pygame.init()
+
+#initializing all the variables
+  #screen
+width = 600
+height = 600
+framrate = pygame.time.Clock()
+screen = pygame.display.set_mode((width, height))
+
+pygame.display.set_caption("TIC TAC TOE")
+
+  #images 
+table_design = pygame.image.load('tictactoe frame.png')
+size = (600, 600)
+table_design = pygame.transform.scale(table_design, size)
+
+starfish = pygame.image.load('starfish.png')
+size2 = (100, 100)
+starfish = pygame.transform.scale(starfish, size2)
+
+seashell = pygame.image.load('seashell.png')
+size3 = (110, 110)
+seashell = pygame.transform.scale(seashell, size3)
+
+  #game variables 
+table = [["", "", ""], ["", "", ""], ["", "", ""]]
+current_player = "starfish"
+
+#reset function
+def reset_game():
+    global table, current_player
+    table = [["", "", ""], ["", "", ""], ["", "", ""]]
+    current_player = "starfish"
+    screen.blit(table_design, (0, 0))
+    pygame.display.update()
+
+# Initialize the screen with the table design
+reset_game()
+
+#check winner function 
+def check_winner():
+    for row in table:
+        if row[0] == row[1] == row[2] != "":
+            return row[0]
+    for col in range(3):
+        if table[0][col] == table[1][col] == table[2][col] != "":
+            return table[0][col]
+    if table[0][0] == table[1][1] == table[2][2] != "":
+        return table[0][0]
+    if table[0][2] == table[1][1] == table[2][0] != "":
+        return table[0][2]
+    return None
+
+#check for a draw 
+def check_draw():
+    for row in table:
+        for cell in row:
+            if cell == "":
+                return False
+    return True
+
+#display winner function 
+def display_winner(winner):
+    font = pygame.font.Font(None, 75)
+    text_color = (80, 220, 100)  
+    background_color = (246, 220, 202)  
+
+    if winner == "starfish":
+        text = font.render(" Starfish Wins! ", True, text_color, background_color)
+    else:
+        text = font.render(" Seashell Wins! ", True, text_color, background_color)
+
+    text_rect = text.get_rect(center=(width // 2, height // 2))
+
+    screen.blit(text, text_rect)
+    pygame.display.update()
+    pygame.time.wait(3000)
+    reset_game()
+
+#display draw function 
+def display_draw():
+    font = pygame.font.Font(None, 75)
+    text_color = (194, 24, 7)  
+    background_color = (246, 236, 215) 
+    text = font.render(" It is a draw! ", True, text_color, background_color)
+
+    text_rect = text.get_rect(center=(width // 2, height // 2))
+
+    screen.blit(text, text_rect)
+    pygame.display.update()
+    pygame.time.wait(3000)
+    reset_game()
+
+#the game loop for tic tac toe
+while True:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            exit()
+
+        #checking if user clicked on mouse and placed object in an empty row and column
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            (x, y) = pygame.mouse.get_pos()
+            move_made = False
+
+            if (x >= 82 and x <= 213) and (y >= 167 and y <= 283):
+                if (table[0][0] == ""):
+                    table[0][0] = current_player
+                    if (current_player == "starfish"):
+                        screen.blit(starfish, (88, 174))
+                    else:
+                        screen.blit(seashell, (88, 174))
+                    move_made = True
+
+            elif (x >= 221 and x <= 372) and (y >= 168 and y <= 285):
+                if (table[0][1] == ""):
+                    table[0][1] = current_player
+                    if current_player == "starfish":
+                        screen.blit(starfish, (224, 176))
+                    else:
+                        screen.blit(seashell, (224, 176))
+                    move_made = True
+
+            elif (x >= 377 and x <= 514) and (y >= 169 and y <= 284):
+                if (table[0][2] == ""):
+                    table[0][2] = current_player
+                    if current_player == "starfish":
+                        screen.blit(starfish, (389, 182))
+                    else:
+                        screen.blit(seashell, (389, 182))
+                    move_made = True
+
+            elif (x >= 84 and x <= 214) and (y >= 290 and y <= 409):
+                if (table[1][0] == ""):
+                    table[1][0] = current_player
+                    if current_player == "starfish":
+                        screen.blit(starfish, (88, 298))
+                    else:
+                        screen.blit(seashell, (88, 298))
+                    move_made = True
+
+            elif (x >= 219 and x <= 371) and (y >= 291 and y <= 410):
+                if (table[1][1] == ""):
+                    table[1][1] = current_player
+                    if current_player == "starfish":
+                        screen.blit(starfish, (228, 304))
+                    else:
+                        screen.blit(seashell, (228, 304))
+                    move_made = True
+
+            elif (x >= 378 and x <= 515) and (y >= 289 and y <= 410):
+                if (table[1][2] == ""):
+                    table[1][2] = current_player
+                    if current_player == "starfish":
+                        screen.blit(starfish, (385, 305))
+                    else:
+                        screen.blit(seashell, (385, 305))
+                    move_made = True
+
+            elif (x >= 83 and x <= 214) and (y >= 419 and y <= 535):
+                if (table[2][0] == ""):
+                    table[2][0] = current_player
+                    if current_player == "starfish":
+                        screen.blit(starfish, (81, 432))
+                    else:
+                        screen.blit(seashell, (81, 432))
+                    move_made = True
+
+            elif (x >= 221 and x <= 371) and (y >= 422 and y <= 533):
+                if (table[2][1] == ""):
+                    table[2][1] = current_player
+                    if current_player == "starfish":
+                        screen.blit(starfish, (229, 438))
+                    else:
+                        screen.blit(seashell, (229, 438))
+                    move_made = True
+
+            elif (x >= 379 and x <= 515) and (y >= 420 and y <= 533):
+                if (table[2][2] == ""):
+                    table[2][2] = current_player
+                    if current_player == "starfish":
+                        screen.blit(starfish, (385, 432))
+                    else:
+                        screen.blit(seashell, (385, 432))
+                    move_made = True
+
+            #switching players after every turn 
+            if move_made: 
+                current_player = "seashell" if current_player == "starfish" else "starfish"
+            #checking for a winner 
+            winner = check_winner()
+            if winner: 
+                display_winner(winner)
+            if check_draw():
+                display_draw()
+
+            #show the current player 
+            screen.fill((255, 239, 222), (0, height - 30, width, 30))
+            font = pygame.font.Font(None, 24)
+            text_color = (0, 0, 0)
+            text = font.render(f"Current player: {current_player}", True, text_color)
+            text_rect = text.get_rect()
+            text_rect.bottomleft = (10, height - 10)
+            screen.blit(text, text_rect)
+
+            pygame.display.update()
+            framrate.tick(20)
+
+    pygame.display.update()
+    framrate.tick(20)
+
+
+
